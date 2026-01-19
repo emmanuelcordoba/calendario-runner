@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carreras', function (Blueprint $table) {
+        Schema::create('races', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('name');
             $table->string('slug')->unique();
-            $table->unsignedBigInteger('disciplina_id');
-            $table->text('descripcion')->nullable();
-            $table->string('imagen')->nullable();
-            $table->string('lugar')->nullable();
+            $table->unsignedBigInteger('discipline_id');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('place')->nullable();
             $table->timestamps();
-            $table->foreign('disciplina_id')->references('id')->on('disciplinas');
+            $table->foreign('discipline_id')->references('id')->on('disciplines');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carreras');
+        Schema::dropIfExists('races');
     }
 };

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enlaces', function (Blueprint $table) {
+        Schema::create('searches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('carrera_id');
-            $table->string('tipo')->nullable();
-            $table->string('titulo')->nullable();
-            $table->string('url')->nullable();
+            $table->unsignedBigInteger('race_id')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('discipline')->nullable();
             $table->timestamps();
-            $table->foreign('carrera_id')->references('id')->on('carreras');
+            $table->foreign('race_id')->references('id')->on('races');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enlaces');
+        Schema::dropIfExists('searches');
     }
 };

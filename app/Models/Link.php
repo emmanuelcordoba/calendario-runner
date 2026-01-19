@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Enlace extends Model
+class Link extends Model
 {
-    const TIPOS = [
+    const TYPES = [
         'Web',
         'Instagram',
         'Facebook',
@@ -19,15 +19,17 @@ class Enlace extends Model
         'Teléfono'
     ];
 
-    protected $table = 'enlaces';
+    protected $table = 'links';
 
     protected $fillable = [
-        'tipo',
-        'url',
+        'race_id',
+        'type',
+        'title',
+        'url'
     ];
 
-    public function carrera(): BelongsTo
+    public function race(): BelongsTo
     {
-        return $this->belongsTo(Carrera::class);
+        return $this->belongsTo(Race::class);
     }
 }

@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Disciplina extends Model
+class Discipline extends Model
 {
     protected $fillable = [
-        'nombre',
-        'descripcion'
+        'name',
+        'description'
     ];
 
-    public function carreras(): HasMany
+    public function races(): HasMany
     {
-        return $this->hasMany(Carrera::class);
+        return $this->hasMany(Race::class);
     }
 }

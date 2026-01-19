@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('busquedas', function (Blueprint $table) {
+        Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('carrera_id')->nullable();
-            $table->date('desde')->nullable();
-            $table->date('hasta')->nullable();
-            $table->string('disciplina')->nullable();
+            $table->string('name')->unique();
+            $table->string('description');
             $table->timestamps();
-            $table->foreign('carrera_id')->references('id')->on('carreras');
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('busquedas');
+        Schema::dropIfExists('disciplines');
     }
 };

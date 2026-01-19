@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provincias', function (Blueprint $table) {
+        Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->unsignedBigInteger('race_id');
+            $table->string('type')->nullable();
+            $table->string('title')->nullable();
+            $table->string('url')->nullable();
             $table->timestamps();
+            $table->foreign('race_id')->references('id')->on('races');
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provincias');
+        Schema::dropIfExists('links');
     }
 };
