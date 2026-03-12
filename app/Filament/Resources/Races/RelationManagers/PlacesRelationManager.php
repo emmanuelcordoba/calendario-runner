@@ -1,11 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\RaceResource\RelationManagers;
+namespace App\Filament\Resources\Races\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 use App\Models\Locality;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,10 +20,10 @@ class PlacesRelationManager extends RelationManager
 {
     protected static string $relationship = 'places';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Select::make('province_id')
                     ->relationship('province', 'name')
                     ->required()
@@ -39,23 +45,23 @@ class PlacesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('place')
             ->columns([
-                Tables\Columns\TextColumn::make('province.name'),
-                Tables\Columns\TextColumn::make('locality.name'),
-                Tables\Columns\TextColumn::make('place'),
+                TextColumn::make('province.name'),
+                TextColumn::make('locality.name'),
+                TextColumn::make('place'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

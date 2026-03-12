@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Localities;
 
+use Filament\Schemas\Schema;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use App\Filament\Resources\Localities\Pages\ManageLocalities;
 use App\Filament\Resources\LocalityResource\Pages;
 use App\Models\Locality;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -25,12 +29,12 @@ class LocalityResource extends Resource
 
     protected static ?string $pluralLabel = 'Localidades';
 
-    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-map-pin';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Select::make('province_id')
                     ->relationship('province', 'name')
                     ->required(),
@@ -50,20 +54,20 @@ class LocalityResource extends Resource
                     ->sortable()
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('province_id')
+                SelectFilter::make('province_id')
                     ->relationship('province', 'name')
                     ->label('Provincia')
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageLocalities::route('/'),
+            'index' => ManageLocalities::route('/'),
         ];
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\RaceResource\Pages;
+namespace App\Filament\Resources\Races\Pages;
 
-use App\Filament\Resources\RaceResource;
+use Filament\Actions\DeleteAction;
+use App\Filament\Resources\Races\RaceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,7 +14,7 @@ class EditRace extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

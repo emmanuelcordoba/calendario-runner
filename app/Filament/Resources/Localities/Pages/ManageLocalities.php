@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\LocalityResource\Pages;
+namespace App\Filament\Resources\Localities\Pages;
 
-use App\Filament\Resources\LocalityResource;
+use Filament\Actions\CreateAction;
+use App\Filament\Resources\Localities\LocalityResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -13,7 +14,7 @@ class ManageLocalities extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

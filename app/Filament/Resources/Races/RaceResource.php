@@ -1,23 +1,28 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Races;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use App\Filament\Resources\Races\Pages\ListRaces;
+use App\Filament\Resources\Races\Pages\CreateRace;
+use App\Filament\Resources\Races\Pages\EditRace;
 use App\Filament\Resources\RaceResource\Pages;
-use App\Filament\Resources\RaceResource\RelationManagers\EditionsRelationManager;
-use App\Filament\Resources\RaceResource\RelationManagers\LinksRelationManager;
-use App\Filament\Resources\RaceResource\RelationManagers\PlacesRelationManager;
+use App\Filament\Resources\Races\RelationManagers\EditionsRelationManager;
+use App\Filament\Resources\Races\RelationManagers\LinksRelationManager;
+use App\Filament\Resources\Races\RelationManagers\PlacesRelationManager;
 use App\Models\Race;
 use App\Tables\Columns\Links;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -32,12 +37,12 @@ class RaceResource extends Resource
 
     protected static ?string $pluralLabel = 'Carreras';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
@@ -73,7 +78,7 @@ class RaceResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image')
+                ImageColumn::make('image')
                     ->label('Imagen'),
                 TextColumn::make('discipline.name')
                     ->searchable(),
@@ -100,8 +105,8 @@ class RaceResource extends Resource
                     ->url('/admin/carreras/proximamente')
                     ->openUrlInNewTab(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ]);
     }
 
@@ -117,9 +122,9 @@ class RaceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRaces::route('/'),
-            'create' => Pages\CreateRace::route('/create'),
-            'edit' => Pages\EditRace::route('/{record}/edit'),
+            'index' => ListRaces::route('/'),
+            'create' => CreateRace::route('/create'),
+            'edit' => EditRace::route('/{record}/edit'),
         ];
     }
 }

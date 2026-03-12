@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\RaceResource\Pages;
+namespace App\Filament\Resources\Races\Pages;
 
-use App\Filament\Resources\RaceResource;
+use App\Filament\Resources\Races\RaceResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
