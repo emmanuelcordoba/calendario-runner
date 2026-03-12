@@ -29,8 +29,22 @@ class Race extends Model
 
     protected function getFinalPlaceAttribute(): string
     {
-        return $this->place ??
-            ($this->places->first()->place ?? $this->places->first()->locality->name).', '.$this->places->first()->province->name;
+        if($this->place !== null)
+        {
+            return $this->place;
+        }
+        if($this->places->first())
+        {
+            if($this->places->first()->place && $this->places->first()->province)
+            {
+                return $this->places->first()->place.', '.$this->places->first()->province->name;
+            }
+            if($this->places->first()->locality && $this->places->first()->province)
+            {
+                return $this->places->first()->locality->name.', '.$this->places->first()->province->name;
+            }
+        }
+        return 'Lugar sin especificar';
     }
 
     protected function getProvincesAttribute(): array
