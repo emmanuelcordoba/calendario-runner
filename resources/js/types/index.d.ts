@@ -41,3 +41,61 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Edition {
+    id: number;
+    start_date: string;
+    end_date: string;
+    distances: string[];
+    image: string;
+    race: Race;
+}
+
+export interface Race {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+    image: string;
+    final_place: string;
+    place?: string;
+    discipline: Discipline;
+    places?: Place[];
+    links?: Link[];
+}
+
+export interface Discipline {
+    id: number;
+    name: string;
+    description: string;
+}
+
+export interface Province {
+    id: number;
+    name: string;
+}
+
+export interface Locality {
+    id: number;
+    name: string;
+}
+
+export interface Place {
+    id: number;
+    province: Province;
+    locality?: Locality;
+    place?: string;
+}
+
+export interface Link {
+    id: number;
+    type: string;
+    title: string;
+    url: string;
+}
+
+export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
+    auth: {
+        user: User;
+    };
+};

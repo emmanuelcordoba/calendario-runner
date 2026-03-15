@@ -14,7 +14,7 @@ class Edition extends Model
         'start_date',
         'end_date',
         'distances',
-        'imagen'
+        'image'
     ];
 
     protected $casts = [
