@@ -20,6 +20,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public Auth Screens
+    |--------------------------------------------------------------------------
+    |
+    | These toggles control whether login and registration are exposed for
+    | guest users. The register flag is also enforced server-side.
+    |
+    */
+
+    'public_login_enabled' => env('AUTH_PUBLIC_LOGIN_ENABLED', true),
+
+    'public_register_enabled' => env('AUTH_PUBLIC_REGISTER_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |

@@ -9,7 +9,6 @@ use App\Models\Search;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
 
 class HomeController extends Controller
 {
@@ -41,8 +40,6 @@ class HomeController extends Controller
         $editions = $editions->orderBy('start_date')->get();
 
         return Inertia::render('welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
             'featured' => false,
             'search' => $search,
             'start' => $start,
@@ -70,8 +67,6 @@ class HomeController extends Controller
         $race->searches()->create();
 
         return Inertia::render('show-edition', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
             'edition' => $edition
         ]);
     }

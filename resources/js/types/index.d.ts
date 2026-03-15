@@ -3,6 +3,8 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    canLogin: boolean;
+    canRegister: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -95,7 +97,5 @@ export interface Link {
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
-    auth: {
-        user: User;
-    };
+    auth: Auth;
 };

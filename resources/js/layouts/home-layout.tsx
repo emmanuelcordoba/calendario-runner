@@ -1,11 +1,12 @@
 import { PropsWithChildren } from 'react';
-import { Link } from '@inertiajs/react';
-import { User } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { SharedData, User } from '@/types';
 import { useAppearance } from '@/hooks/use-appearance';
 import { Moon, Sun } from 'lucide-react';
 
 export default function Home({ user, children }: PropsWithChildren<{ user: User }>) {
     const { appearance, updateAppearance } = useAppearance();
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -46,20 +47,22 @@ export default function Home({ user, children }: PropsWithChildren<{ user: User 
                     </a>
                 ) : (
                     <>
-                        <Link
-                            href={route('login')}
-                            className="text-foreground/80 transition-colors hover:text-foreground"
-                        >
-                            Iniciar sesión
-                        </Link>
-                        {/*
+                        {auth.canLogin && (
+                            <Link
+                                href={route('login')}
+                                className="text-foreground/80 transition-colors hover:text-foreground"
+                            >
+                                Iniciar sesión
+                            </Link>
+                        )}
+                        {auth.canRegister && (
                             <Link
                                 href={route('register')}
-                                className="link-underline link-underline-opacity-0"
+                                className="text-foreground/80 transition-colors hover:text-foreground"
                             >
                                 Registro
                             </Link>
-                            */}
+                        )}
                     </>
                 )}
             </div>

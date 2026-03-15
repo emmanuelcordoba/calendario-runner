@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -45,6 +46,8 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'canLogin' => Route::has('login') && config('auth.public_login_enabled', true),
+                'canRegister' => Route::has('register') && config('auth.public_register_enabled', true),
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
