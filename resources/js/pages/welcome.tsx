@@ -22,16 +22,16 @@ export default function Welcome({
     editions: Edition[];
 }>) {
     const { data, setData, get, processing } = useForm({
-        start: start,
-        end: end,
-        discipline: discipline,
+        start,
+        end,
+        discipline,
     });
     const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const field = e.target.name as keyof typeof data;
         setData(field, e.target.value);
     };
     const submit = () => {
-        get(route('home', { desde: data.start, hasta: data.end, disciplina: data.discipline }));
+        get(route('home', { start: data.start, end: data.end, discipline: data.discipline }));
     };
     return (
         <HomeLayout user={auth.user}>

@@ -15,21 +15,28 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->start && $request->end && $request->discipline;
-        $start = ($request->desde && $request->end) ? $search = $request->start : Carbon::now()->format('Y-m-d');
-        $end = ($request->desde && $request->end) ? $search = $request->end : Carbon::now()->addMonths(12)->format('Y-m-d');
-        $discipline = $request->disciplina ? Discipline::find($request->discipline) : 'all';
+        $start = $request->input('start', Carbon::now()->format('Y-m-d'));
+        $end = $request->input('end', Carbon::now()->addMonths(12)->format('Y-m-d'));
+        $disciplineId = (string) $request->input('discipline', 'all');
+        $search = $request->filled('start') && $request->filled('end') && $request->filled('discipline');
+        $discipline = $disciplineId !== 'all' ? Discipline::find($disciplineId) : null;
 
-        if($search)
-        {
-            Search::create(['start_date' => $start, 'end_date' => $end, 'discipline' => $discipline]);
+        if ($disciplineId !== 'all' && ! $discipline) {
+            $disciplineId = 'all';
+        }
+
+        if ($search) {
+            Search::create([
+                'start_date' => $start,
+                'end_date' => $end,
+                'discipline' => $disciplineId,
+            ]);
         }
 
         $disciplines = Discipline::all();
         $editions = Edition::where('start_date' ,'>=',$start)->where('end_date' ,'<=',$end)->with('race.discipline');
-        if($discipline !== 'all')
-        {
-            $editions = $editions->whereRelation('race.discipline','discipline_id', $discipline->id);
+        if ($discipline) {
+            $editions = $editions->whereRelation('race', 'discipline_id', $discipline->id);
         }
         $editions = $editions->orderBy('start_date')->get();
 
@@ -40,7 +47,7 @@ class HomeController extends Controller
             'search' => $search,
             'start' => $start,
             'end' => $end,
-            'discipline' => $discipline !== 'all' ? $discipline->id : 'all',
+            'discipline' => $discipline ? (string) $discipline->id : 'all',
             'disciplines' => $disciplines,
             'editions' => $editions
         ]);
