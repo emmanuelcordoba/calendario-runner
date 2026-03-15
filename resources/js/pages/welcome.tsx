@@ -1,4 +1,4 @@
-import { FormEventHandler } from 'react';
+import type { ChangeEvent } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import HomeLayout from '@/layouts/home-layout';
 import { Edition, Discipline, PageProps } from '@/types';
@@ -6,7 +6,6 @@ import RaceItemList from '@/components/home/race-item-list';
 
 export default function Welcome({
     auth,
-    featured,
     search,
     start,
     end,
@@ -22,23 +21,22 @@ export default function Welcome({
     disciplines: Discipline[];
     editions: Edition[];
 }>) {
-    const { data, setData, get, processing, errors, reset } = useForm({
+    const { data, setData, get, processing } = useForm({
         start: start,
         end: end,
         discipline: discipline,
     });
-    const onChange = (e: any) => {
-        setData(e.target.name, e.target.value);
-        console.log(data);
+    const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const field = e.target.name as keyof typeof data;
+        setData(field, e.target.value);
     };
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        get(route('home', { desde: data.desde, hasta: data.hasta, disciplina: data.disciplina }));
+    const submit = () => {
+        get(route('home', { desde: data.start, hasta: data.end, disciplina: data.discipline }));
     };
     return (
         <HomeLayout user={auth.user}>
             <Head title="Home" />
-            <div className="">
+            <section>
                 {/*featured && <div>
                     <h3 className="text-xl font-semibold text-white">Carreras destacadas</h3>
                     <div>
@@ -87,74 +85,84 @@ export default function Welcome({
                         </ul>
                     </div>
                 </div>*/}
-
-                <h3 className="">{search ? 'Buscador' : 'Próximas carreras'}</h3>
-                <div className="container-fluid mt-2">
-                    <form onSubmit={submit} className="row">
-                        <div className="col-md-6 col-12 px-0">
-                            <div className="input-group">
-                                <div className="form-floating">
-                                    <input
-                                        type="date"
-                                        name="desde"
-                                        id="desde"
-                                        className="form-control"
-                                        value={data.start}
-                                        onChange={onChange}
-                                        placeholder="Desde"
-                                        required
-                                    />
-                                    <label htmlFor="desde" className="">
-                                        Desde
-                                    </label>
-                                </div>
-                                <div className="form-floating">
-                                    <input
-                                        type="date"
-                                        name="hasta"
-                                        id="hasta"
-                                        className="form-control"
-                                        value={data.end}
-                                        onChange={onChange}
-                                        placeholder="Hasta"
-                                        required
-                                    />
-                                    <label htmlFor="desde" className="">
-                                        Hasta
-                                    </label>
-                                </div>
+                <h3 className="text-2xl font-semibold">{search ? 'Buscador' : 'Proximas carreras'}</h3>
+                <div className="mt-3">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            submit();
+                        }}
+                        className="grid grid-cols-1 gap-3 rounded-lg border bg-card p-4 md:grid-cols-2"
+                    >
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div className="space-y-1">
+                                <label htmlFor="start" className="text-sm font-medium text-muted-foreground">
+                                    Desde
+                                </label>
+                                <input
+                                    type="date"
+                                    name="start"
+                                    id="start"
+                                    className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={data.start}
+                                    onChange={onChange}
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label htmlFor="end" className="text-sm font-medium text-muted-foreground">
+                                    Hasta
+                                </label>
+                                <input
+                                    type="date"
+                                    name="end"
+                                    id="end"
+                                    className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={data.end}
+                                    onChange={onChange}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div className="col-md-6 col-12 px-0">
-                            <div className="input-group">
-                                <div className="form-floating">
-                                    <select name="discipline" id="disciplina" className="form-select" value={data.discipline} onChange={onChange}>
-                                        <option value="all">Todas</option>
-                                        {disciplines.map((discipline, index) => {
-                                            return (
-                                                <option value={discipline.id} key={index}>
-                                                    {discipline.name}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                    <label htmlFor="disciplina" className="pl-1 text-white">
-                                        Disciplina
-                                    </label>
-                                </div>
-                                <button type="submit" className="btn btn-outline-secondary">
-                                    <i className="fa-solid fa-magnifying-glass py-1"></i> Buscar
-                                </button>
+                        <div className="flex items-end gap-3">
+                            <div className="w-full space-y-1">
+                                <label htmlFor="discipline" className="text-sm font-medium text-muted-foreground">
+                                    Disciplina
+                                </label>
+                                <select
+                                    name="discipline"
+                                    id="discipline"
+                                    className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none ring-offset-background transition focus-visible:ring-2 focus-visible:ring-ring"
+                                    value={data.discipline}
+                                    onChange={onChange}
+                                >
+                                    <option value="all">Todas</option>
+                                    {disciplines.map((discipline) => {
+                                        return (
+                                            <option value={discipline.id} key={discipline.id}>
+                                                {discipline.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
                             </div>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="inline-flex h-9 items-center rounded-md border px-4 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                            >
+                                <i className="fa-solid fa-magnifying-glass mr-2"></i>
+                                Buscar
+                            </button>
                         </div>
                     </form>
-                    <ul className="row list-group my-4">
+                    <ul className="mt-4 space-y-3">
                         {editions.map((edition) => (
                             <RaceItemList edition={edition} key={edition.id} />
                         ))}
                     </ul>
                 </div>
-            </div>
+            </section>
         </HomeLayout>
     );
 }

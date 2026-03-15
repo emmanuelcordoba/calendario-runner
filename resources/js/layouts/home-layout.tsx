@@ -4,12 +4,12 @@ import { User } from '@/types';
 
 export default function Home({ user, children }: PropsWithChildren<{ user: User }>) {
     return (
-        <div className='d-flex flex-column'>
-            <div className="p-4 text-end">
+        <div className="flex min-h-screen flex-col">
+            <div className="p-4 text-right text-sm">
                 {user ? (
                     <a
                         href={route('dashboard')}
-                        className="link-underline link-underline-opacity-0"
+                        className="text-foreground/80 transition-colors hover:text-foreground"
                     >
                         Dashboard
                     </a>
@@ -17,7 +17,7 @@ export default function Home({ user, children }: PropsWithChildren<{ user: User 
                     <>
                         <Link
                             href={route('login')}
-                            className="link-underline link-underline-opacity-0"
+                            className="text-foreground/80 transition-colors hover:text-foreground"
                         >
                             Iniciar sesión
                         </Link>
@@ -32,41 +32,34 @@ export default function Home({ user, children }: PropsWithChildren<{ user: User 
                     </>
                 )}
             </div>
-            <main className="container">
-                <div className="row">
-                    <div className="col text-center">
-                        <Link
-                            href={route('home')}
-                            className="link-underline link-underline-opacity-0"
-                        ><h1>Calendario Runner</h1></Link>
-                        <p className="text-xl text-gray-600">Agenda argentina de carreras de calle y montaña.</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col col-sm-10 col-md-8 mx-auto">
-                        {children}
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col text-center">
-                        <a href='https://cafecito.app/emmanuelcordoba' rel='noopener' target='_blank'><img
-                            srcSet='https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x'
-                            src='https://cdn.cafecito.app/imgs/buttons/button_1.png'
-                            alt='Invitame un café en cafecito.app'/></a>
-                    </div>
-                </div>
-            </main>
-            <div className="d-grid mt-4">
+            <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-8">
                 <div className="text-center">
-                    <a
-                        href="https://emmanuelcordoba.com/"
-                        className="link-underline link-underline-opacity-0"
-                        target='_blank'
-                    >
-                        <i className="fa-brands fa-linkedin me-2"></i>
-                        Desarrollado por Emmanuel Cordoba
+                    <Link href={route('home')} className="inline-block text-3xl font-bold tracking-tight transition-opacity hover:opacity-80">
+                        Calendario Runner
+                    </Link>
+                    <p className="mt-2 text-lg text-muted-foreground">Agenda argentina de carreras de calle y montaña.</p>
+                </div>
+                <div className="mx-auto mt-6 w-full max-w-3xl">{children}</div>
+                <div className="mt-8 text-center">
+                    <a href="https://cafecito.app/emmanuelcordoba" rel="noopener" target="_blank" className="inline-block">
+                        <img
+                            srcSet="https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x"
+                            src="https://cdn.cafecito.app/imgs/buttons/button_1.png"
+                            alt="Invitame un cafe en cafecito.app"
+                        />
                     </a>
                 </div>
+            </main>
+            <div className="mt-4 pb-6 text-center text-sm">
+                <a
+                    href="https://emmanuelcordoba.com/"
+                    className="text-foreground/80 transition-colors hover:text-foreground"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <i className="fa-brands fa-linkedin mr-2"></i>
+                    Desarrollado por Emmanuel Cordoba
+                </a>
             </div>
         </div>
     );
